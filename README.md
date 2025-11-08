@@ -54,7 +54,6 @@ The system is fully modular, so new measurement types and units can be easily ad
 
 Follow these steps to run the project locally:
 
-```bash
 # Clone this repository
 - git clone https://github.com/PendraSailu/Physical-Quantities-Converter.git
 
