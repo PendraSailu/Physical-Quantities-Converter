@@ -54,22 +54,22 @@ The system is fully modular, so new measurement types and units can be easily ad
 
 Follow these steps to run the project locally:
 
-# Clone this repository
+### Clone this repository
 - git clone https://github.com/PendraSailu/Physical-Quantities-Converter.git
 
-# Navigate to the project directory
+### Navigate to the project directory
 - cd Physical-Quantities-Converter
 
-# Install dependencies
+### Install dependencies
 - npm install
 
-# Start the server
+### Start the server
 - npm start
 
-# Then open your browser and visit:
+### Then open your browser and visit:
 - 👉 http://localhost:3000
 
-# Project Output
+## Project Output
 <img width="1916" height="731" alt="image" src="https://github.com/user-attachments/assets/e102780a-b3bf-43ff-98ea-1d0352e3f4c4" />
 
 ## 🏁 Conclusion
