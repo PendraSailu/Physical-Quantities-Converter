@@ -49,6 +49,7 @@ The system is fully modular, so new measurement types and units can be easily ad
 ## 🧩 Project Structure
 
 <img width="256" height="356" alt="image" src="https://github.com/user-attachments/assets/bd90112b-dd17-4700-8781-0ff511f19bba" />  
+
 ## 📦 Installation & Setup
 
 Follow these steps to run the project locally:
