@@ -246,26 +246,80 @@ function convertInternal(topUnitIndex, value, bottomUnitIndex, inputResult) {
 
     inputResult.value = value.toFixed(4);
 }
+async function convert() {
+  const value = parseFloat(document.getElementById("inputTop").value);
+  const from = document.getElementById("optionTop").value;
+  const to = document.getElementById("optionBottom").value;
 
-function convert() {
-    let value = parseFloat(inputTop.value);
-    if (isNaN(value)) {
-        inputBottom.value = '';
-    } else {
-        convertInternal(optionTop.selectedIndex, value, optionBottom.selectedIndex, inputBottom)
-        localStorage.setItem('input' + quantity.name, value.toString());
-    }
+  if (isNaN(value)) return;
+
+  const response = await fetch(apiUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ type: currentType, from, to, value })
+  });
+
+  const data = await response.json();
+  document.getElementById("inputBottom").value = data.result ?? "";
 }
 
-function convertBack() {
-    let value = parseFloat(inputBottom.value);
+const apiUrl = "http://localhost:3000/api/convert";
+const units = {
+  length: ["meter", "kilometer", "centimeter", "millimeter", "mile", "yard", "foot", "inch"],
+  mass: ["kilogram", "gram", "milligram", "pound", "ounce"],
+  time: ["second", "minute", "hour", "day"],
+  temperature: ["celsius", "fahrenheit", "kelvin"],
+  area: ["square meter", "square kilometer", "square centimeter", "square millimeter", "hectare", "acre"],
+  volume: ["liter", "milliliter", "cubic_meter", "gallon", "pint"],
+  "digital-storage": ["bit", "byte", "kilobyte", "megabyte", "gigabyte", "terabyte"],
+  angle: ["degree", "radian", "gradian"]
+};
 
-    if (isNaN(value)) {
-        inputTop.value = '';
-    } else {
-        let topUnitIndex = optionBottom.selectedIndex;
-        let bottomUnitIndex = optionTop.selectedIndex;
+let currentType = "length";
+function loadQuantity(type) {
+  currentType = type;
 
-        convertInternal(topUnitIndex, value, bottomUnitIndex, inputTop);
-    }
+  const title = document.getElementById("quantityTitle");
+  const topSelect = document.getElementById("optionTop");
+  const bottomSelect = document.getElementById("optionBottom");
+
+  title.textContent = `${type.charAt(0).toUpperCase() + type.slice(1)} Converter`;
+
+  topSelect.innerHTML = "";
+  bottomSelect.innerHTML = "";
+  units[type].forEach(unit => {
+    const opt1 = document.createElement("option");
+    opt1.value = unit;
+    opt1.textContent = unit;
+    topSelect.appendChild(opt1);
+
+    const opt2 = document.createElement("option");
+    opt2.value = unit;
+    opt2.textContent = unit;
+    bottomSelect.appendChild(opt2);
+  });
+
+  topSelect.selectedIndex = 0;
+  bottomSelect.selectedIndex = 1;
+  document.getElementById("inputTop").value = 1;
+  convert();
 }
+
+async function convertBack() {
+  const value = parseFloat(document.getElementById("inputBottom").value);
+  const from = document.getElementById("optionBottom").value;
+  const to = document.getElementById("optionTop").value;
+
+  if (isNaN(value)) return;
+
+  const response = await fetch(apiUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ type: currentType, from, to, value })
+  });
+
+  const data = await response.json();
+  document.getElementById("inputTop").value = data.result ?? "";
+}
+
+window.onload = () => loadQuantity("length");
